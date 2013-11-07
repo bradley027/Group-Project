@@ -4,12 +4,13 @@ from datetime import datetime
 from netCDF4 import Dataset
 from mpl_toolkits.basemap import Basemap
 
-def model_visualization(url, llat=23., ulat=51., llon=-130., rlon=-65.):
+def model_visualization(url, llat, ulat, llon, rlon):
     nc = Dataset(url)
     lon = nc.variables['LON'][:]
     lat = nc.variables['LAT'][:]
-    #depth = nc.variables['DEPTH'][:]
-    #temp = nc.variables['TEMP'][:]
+    #time = nc.variables['TIME1'][:]
+    #depth = nc.variables['DEPTH1_3'][0:1]
+    temp = nc.variables['TEMP'][:]
     #salt = nc.variables['SALT'][:]
     #u = nc.variables['U'][:]
     #v = nc.variables['V'][:]
@@ -18,9 +19,8 @@ def model_visualization(url, llat=23., ulat=51., llon=-130., rlon=-65.):
     #tauy = nc.variables['TAUY'][:]
     #ssh = nc.variables['SSH'][:]
     
-    return lat,lon,
-    #depth,temp,salt,u,v,w,taux,tauy,ssh
-
+    return lat,lon,temp 
+   
     m = Basemap(projection='robin',
                 llcrnrlat=llat,
                 urcrnrlat=ulat,
@@ -30,5 +30,10 @@ def model_visualization(url, llat=23., ulat=51., llon=-130., rlon=-65.):
                 resolution='i')              
 
 # Function Calls
-url = 'http://sodaserver.tamu.edu:80/opendap/SODA_2.2.8/ENSEMBLE_MEAN/SODA_2.2.8_187101.cdf'
-lat, lon, = model_visualization(url)
+url = 'http://sodaserver.tamu.edu:80/opendap/TEMP/SODA_2.3.1_01-01_python.cdf'
+#nino 3.4 region
+llat = -5.
+ulat = 5.
+llon = -170.
+rlon = -120.
+lat, lon, temp = model_visualization(url,llat,ulat,llon,rlon)
